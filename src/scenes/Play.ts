@@ -62,7 +62,7 @@ export class Play extends Phaser.Scene {
         this.redoKey.on("down", () => this.redo());
 
         // Saving & Loading
-        this.saveToSlot1Key = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.P); // ;
+        this.saveToSlot1Key = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.P); // P
         this.saveToSlot1Key.on("down", () => this.saveToSlot(1));
         this.saveToSlot2Key = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.QUOTES); // '
         this.saveToSlot2Key.on("down", () => this.saveToSlot(2));
