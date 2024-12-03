@@ -62,7 +62,7 @@ export class Play extends Phaser.Scene {
         this.redoKey.on("down", () => this.redo());
 
         // Saving & Loading
-        this.saveToSlot1Key = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SEMICOLON); // ;
+        this.saveToSlot1Key = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.P); // ;
         this.saveToSlot1Key.on("down", () => this.saveToSlot(1));
         this.saveToSlot2Key = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.QUOTES); // '
         this.saveToSlot2Key.on("down", () => this.saveToSlot(2));
@@ -102,7 +102,7 @@ export class Play extends Phaser.Scene {
         Advance Time: ( T ) <br>
         Undo: ( LEFT ) <br>
         Redo: ( RIGHT ) <br>
-        Save to Slot 1: ( ; ) <br>
+        Save to Slot 1: ( P ) <br>
         Save to Slot 2: ( ' ) <br>
         Load Slot 1: ( [ ) <br>
         Load Slot 2: ( ] ) <br>
