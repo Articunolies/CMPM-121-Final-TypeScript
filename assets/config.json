@@ -1,0 +1,13 @@
+{
+  "grid": {
+    "height": 8,
+    "width": 8
+  },
+  "win_conditions": {
+    "maxLevelPlants": 6,
+    "mushroom": 4,
+    "grass": 2
+  },
+  "human_instructions": "Grow atleast 6 max level plants with 4 mushroom and 2 grass"
+
+}

@@ -1,6 +1,7 @@
 import { Player } from '../GameObjects/player.ts';
 import { Grid } from '../GameObjects/grid.ts';
 import { Plant } from '../GameObjects/plant.ts';
+//import yaml from 'js-yaml';
 
 export class Play extends Phaser.Scene {
     private player!: Player;
@@ -8,7 +9,9 @@ export class Play extends Phaser.Scene {
     private gridStates: ArrayBuffer[] = [];
     private redoGridStates: ArrayBuffer[] = [];
     private winningPlants: Set<Plant> = new Set();
+    private daysPassed: number;
     private eventBus!: Phaser.Events.EventEmitter;
+    private gameConfig: any; // To hold config
 
     private advanceTimeKey!: Phaser.Input.Keyboard.Key;
     private undoKey!: Phaser.Input.Keyboard.Key;
@@ -25,7 +28,7 @@ export class Play extends Phaser.Scene {
         super("gameScene");
     }
 
-    preload() {
+    async preload() {
         this.load.path = 'CMPM121-Final/assets/';
         this.load.image("dirt", "dirt.png");
         this.load.image("grass1", "grass1.png");
@@ -33,17 +36,28 @@ export class Play extends Phaser.Scene {
         this.load.image("mushroom1", "mushroom1.png");
         this.load.image("mushroom2", "mushroom2.png");
         this.load.image("player", "player1.png");
+
+        // Apply link for json file
+        this.load.json('gameConfig', 'config.json');
     }
 
     create() {
         this.setInput();
         this.displayControls();
         this.createEventBus();
+
+        this.gameConfig = this.cache.json.get('gameConfig');
+
         this.player = new Player(this, 150, 50);
-        this.grid = new Grid(this, 100, 50, 2, 2, 1, 1);
+        if(this.gameConfig){
+            this.grid = new Grid(this, 100, 50, this.gameConfig.grid.height, this.gameConfig.grid.width, 1, 1);
+        } else{
+            this.grid = new Grid(this, 100, 50, 2, 2, 1, 1);
+        }
         this.gridStates = [this.grid.state.slice(0)]; // set the first state to the state the game starts out in
         this.redoGridStates = [];
         this.winningPlants = new Set();
+        this.daysPassed = 0;
     }
 
     override update() {
@@ -119,6 +133,7 @@ export class Play extends Phaser.Scene {
                 this.updateWinProgress(tile.plant);
             });
         });
+        this.daysPassed += 1;
         this.eventBus.emit("grid changed");
         console.log("Advanced time");
     }
@@ -129,11 +144,39 @@ export class Play extends Phaser.Scene {
         }
         if (plant.level >= Plant.MAX_LEVEL) {
             this.winningPlants.add(plant);
-            if (this.winningPlants.size >= this.grid.numTiles) {
-                console.log("You won!");
+    
+            // Initialize species counts
+            const speciesCounts: Record<string, number> = {};
+            for (const p of this.winningPlants) {
+                if (!speciesCounts[p.species.name]) {
+                    speciesCounts[p.species.name] = 0;
+                }
+                speciesCounts[p.species.name]++;
             }
+    
+            // Win conditions from JSON
+            const winConditions = this.gameConfig.win_conditions;
+            const maxLevelPlants = winConditions.maxLevelPlants;
+    
+            // Check max plants
+            if (this.winningPlants.size < maxLevelPlants) {
+                return;
+            }
+            // Check species
+            for (const species in winConditions) {
+                if (species === "maxLevelPlants") {
+                    continue;
+                }
+                const requiredCount = winConditions[species];
+                if ((speciesCounts[species] || 0) < requiredCount) {
+                    return;
+                }
+            }
+    
+            console.log("You won!");
         }
     }
+    
 
     private undo() {
         if (this.gridStates.length > 1) {
