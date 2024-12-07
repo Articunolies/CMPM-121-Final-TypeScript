@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: 'CMPM-121-Final-TypeScript', 
+  base: '/CMPM-121-Final-TypeScript', 
   build: {
     outDir: 'dist',
   },
