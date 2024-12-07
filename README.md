@@ -1,3 +1,27 @@
+# DevLog Entry 3 - [12/6/2024]
+## How we satisfied the software requirements
+### F0+F1
+No Major Changes were made.
+
+### External DSL for Scenario Design
+
+### Internal DSL for Plants and Growth Conditions
+
+### Switch to Alternate Platform
+Carried Over Code and Data:
+
+Game Logic: Existing JavaScript code, including classes like Player, Grid, Tile, and Plant, was mostly compatible and carried over with type annotations added.
+Assets and Configurations: Game assets such as images configuration files remained unchanged.
+
+Redesigned Concepts:
+
+Type Definitions: Interfaces and explicit types were introduced throughout the codebase to define the structure of game entities and data.
+Modules and Imports: Code was restructured to use ES6 modules, with proper import and export statements aligning with TypeScript standards.
+
+Originally, the plan was to use JavaScript due to integration difficulties with TypeScript and Phaser. However, with updated documentation and better support, the project shifted to TypeScript. This change provided better tooling and helped catch errors at compile time, enhancing development efficiency.
+
+## Reflection
+
 # DevLog Entry 2 - [11/30/2024]
 
 ## How we satisfied the software requirements
