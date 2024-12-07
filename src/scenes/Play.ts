@@ -148,6 +148,9 @@ export class Play extends Phaser.Scene {
             // Initialize species counts
             const speciesCounts: Record<string, number> = {};
             for (const p of this.winningPlants) {
+                if (!p.species) {   // so TS doesn't get mad
+                    continue;
+                }
                 if (!speciesCounts[p.species.name]) {
                     speciesCounts[p.species.name] = 0;
                 }

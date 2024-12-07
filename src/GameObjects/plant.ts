@@ -1,22 +1,41 @@
 import { Tile } from './tile.ts'; // Adjust the import path as necessary
 
+interface Species {
+    name: string;
+    id: number;
+    growthConditions: {
+        sunLevel: number;
+        moisture: number;
+        badNeighborSpecies: Species;
+        badNeighborDirection: Direction;
+    };
+}
+interface Direction {
+    x: number;
+    y: number;
+}
+
 export class Plant extends Phaser.GameObjects.Sprite {
     static DEPTH = 1;
     static SPECIES = {
         GRASS: {
             name: "grass",
             id: 1,
-            level2Conditions: {
+            growthConditions: {
                 sunLevel: 3,
-                moisture: 5
+                moisture: 5,
+                badNeighborName: "mushroom",
+                badNeighborDirection: Tile.DIRECTIONS.LEFT
             }
         },
         MUSHROOM: {
             name: "mushroom",
             id: 2,
-            level2Conditions: {
+            growthConditions: {
                 sunLevel: 1,
-                moisture: 15
+                moisture: 15,
+                badNeighborName: "grass",
+                badNeighborDirection: Tile.DIRECTIONS.UP
             }
         },
     };
@@ -103,31 +122,20 @@ export class Plant extends Phaser.GameObjects.Sprite {
 
     tryToGrow() {
         // Ensure plant exists and is below max level
-        if (!this.id || this.level >= Plant.MAX_LEVEL) {
+        if (!this.species || this.level >= Plant.MAX_LEVEL) {
             return;
         }
-        // Ensure spatial conditions are met
-        if (this.species == Plant.SPECIES.GRASS) {
-            // don't go out of array bounds
-            if (this.tile.gridIndex.x > 0) {
-                if (this.tile.getNeighbor(Tile.DIRECTIONS.LEFT).plant.species == Plant.SPECIES.MUSHROOM) {
-                    return;
-                }
-            }
-        } else if (this.species == Plant.SPECIES.MUSHROOM) {
-            // don't go out of array bounds
-            if (this.tile.gridIndex.y > 0) {
-                if (this.tile.getNeighbor(Tile.DIRECTIONS.UP).plant.species == Plant.SPECIES.GRASS) {
-                    return;
-                }
-            }
+        // Ensure growth conditions are met
+        if (this.tile.sunLevel < this.species.growthConditions.sunLevel) {
+            return;
         }
-        // Ensure sun and moisture conditions are met
+        if (this.tile.moisture < this.species.growthConditions.moisture) {
+            return;
+        }
         if (
-            this.species && (
-                this.tile.sunLevel < this.species.level2Conditions.sunLevel ||
-                this.tile.moisture < this.species.level2Conditions.moisture
-            )
+            this.tile.getNeighbor(this.species.growthConditions.badNeighborDirection) &&
+            this.tile.getNeighbor(this.species.growthConditions.badNeighborDirection)?.plant.species?.name == this.species.growthConditions.badNeighborName
+            // don't know why i needed these question marks above but there was red squigglies
         ) {
             return;
         }
@@ -138,7 +146,7 @@ export class Plant extends Phaser.GameObjects.Sprite {
 
         // Decrease tile moisture
         if (this.species) {
-            this.tile.moisture -= this.species.level2Conditions.moisture;
+            this.tile.moisture -= this.species.growthConditions.moisture;
         }
     }
 }

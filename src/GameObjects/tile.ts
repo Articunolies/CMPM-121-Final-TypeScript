@@ -65,7 +65,17 @@ export class Tile extends Phaser.Physics.Arcade.Sprite {
         this.dataView.setUint8(Tile.OFFSET_MOISTURE, amount);
     }
 
-    getNeighbor(direction: { x: number; y: number }): Tile {
-        return this.grid[this.gridIndex.y + direction.y][this.gridIndex.x + direction.x];
+    getNeighbor(direction: { x: number; y: number }): Tile | null {
+        if (
+            this.gridIndex.x + direction.x < 0 ||
+            this.gridIndex.x + direction.x > this.grid[0].length-1 ||
+            this.gridIndex.y + direction.y < 0 ||
+            this.gridIndex.y + direction.y > this.grid.length-1
+        ) {
+            return null;
+        }
+        else {
+            return this.grid[this.gridIndex.y + direction.y][this.gridIndex.x + direction.x];
+        }
     }
 }
