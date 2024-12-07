@@ -102,28 +102,53 @@ export class Play extends Phaser.Scene {
     }
 
     private displayControls() {
-        document.getElementById("description")!.innerHTML = `
-        <h1>Crops Life</h1>
-        <h2>Instructions</h2>
-        Grow a max level plant on each tile to win! <br>
-        Plants have a max level of 2 <br>
-        Grass cannot grow if there's a mushroom to its left <br>
-        A mushroom cannot grow if there's grass above it <br>
-        This game autosaves every time after planting, reaping, or advancing time
-        <h2>Controls</h2>
-        Move: ( WASD ) <br>
-        Plant Grass: ( 1 ) <br>
-        Plant Mushroom: ( 2 ) <br>
-        Reap: ( R ) <br>
-        Advance Time: ( T ) <br>
-        Undo: ( LEFT ) <br>
-        Redo: ( RIGHT ) <br>
-        Save to Slot 1: ( P ) <br>
-        Save to Slot 2: ( ' ) <br>
-        Load Slot 1: ( [ ) <br>
-        Load Slot 2: ( ] ) <br>
-        Load Auto Save: ( \\ )
-        `;
+        if(!this.gameConfig.human_instructions){
+            document.getElementById("description")!.innerHTML = `
+            <h1>Crops Life</h1>
+            <h2>Instructions</h2>
+            Grow a max level plant on each tile to win! <br>
+            Plants have a max level of 2 <br>
+            Grass cannot grow if there's a mushroom to its left <br>
+            A mushroom cannot grow if there's grass above it <br>
+            This game autosaves every time after planting, reaping, or advancing time
+            <h2>Controls</h2>
+            Move: ( WASD ) <br>
+            Plant Grass: ( 1 ) <br>
+            Plant Mushroom: ( 2 ) <br>
+            Reap: ( R ) <br>
+            Advance Time: ( T ) <br>
+            Undo: ( LEFT ) <br>
+            Redo: ( RIGHT ) <br>
+            Save to Slot 1: ( P ) <br>
+            Save to Slot 2: ( ' ) <br>
+            Load Slot 1: ( [ ) <br>
+            Load Slot 2: ( ] ) <br>
+            Load Auto Save: ( \\ )
+            `;
+        } else {
+            document.getElementById("description")!.innerHTML = `
+            <h1>Crops Life</h1>
+            <h2>Instructions</h2>
+            ${this.gameConfig.human_instructions} <br>
+            Plants have a max level of 2 <br>
+            Grass cannot grow if there's a mushroom to its left <br>
+            A mushroom cannot grow if there's grass above it <br>
+            This game autosaves every time after planting, reaping, or advancing time
+            <h2>Controls</h2>
+            Move: ( WASD ) <br>
+            Plant Grass: ( 1 ) <br>
+            Plant Mushroom: ( 2 ) <br>
+            Reap: ( R ) <br>
+            Advance Time: ( T ) <br>
+            Undo: ( LEFT ) <br>
+            Redo: ( RIGHT ) <br>
+            Save to Slot 1: ( P ) <br>
+            Save to Slot 2: ( ' ) <br>
+            Load Slot 1: ( [ ) <br>
+            Load Slot 2: ( ] ) <br>
+            Load Auto Save: ( \\ )
+            `;
+        }
     }
 
     private advanceTime() {
