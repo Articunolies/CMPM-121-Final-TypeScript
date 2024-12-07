@@ -28,7 +28,7 @@ export class Play extends Phaser.Scene {
     }
 
     async preload() {
-        this.load.path = 'CMPM-121-Final-TypeScript/assets/';
+        this.load.path = './assets/';
         this.load.image("dirt", "dirt.png");
         this.load.image("grass1", "grass1.png");
         this.load.image("grass2", "grass2.png");
@@ -38,7 +38,7 @@ export class Play extends Phaser.Scene {
 
         // Apply link for json file
         try {
-            const response = await fetch('CMPM-121-Final-TypeScript/assets/config.json');
+            const response = await fetch('./assets/config.json');
             this.gameConfig = await response.json();
         } catch (error) {
             console.error('Error loading config.json:', error);
