@@ -17,6 +17,12 @@ interface Direction {
 
 export class Plant extends Phaser.GameObjects.Sprite {
     static DEPTH = 1;
+    static DIRECTIONS = {
+        UP: { x: 0, y: -1 },
+        DOWN: { x: 0, y: 1 },
+        LEFT: { x: -1, y: 0 },
+        RIGHT: { x: 1, y: 0 }
+    };
     static SPECIES = {
         GRASS: {
             name: "grass",
@@ -25,7 +31,7 @@ export class Plant extends Phaser.GameObjects.Sprite {
                 sunLevel: 3,
                 moisture: 5,
                 badNeighborName: "mushroom",
-                badNeighborDirection: Tile.DIRECTIONS.LEFT
+                badNeighborDirection: this.DIRECTIONS.LEFT
             }
         },
         MUSHROOM: {
@@ -35,7 +41,7 @@ export class Plant extends Phaser.GameObjects.Sprite {
                 sunLevel: 1,
                 moisture: 15,
                 badNeighborName: "grass",
-                badNeighborDirection: Tile.DIRECTIONS.UP
+                badNeighborDirection: this.DIRECTIONS.UP
             }
         },
     };

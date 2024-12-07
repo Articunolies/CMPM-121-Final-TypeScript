@@ -3,12 +3,6 @@ import { Plant } from './plant.ts';
 export class Tile extends Phaser.Physics.Arcade.Sprite {
     static DEPTH = 0;
     static WIDTH = 18; // in pixels
-    static DIRECTIONS = {
-        UP: { x: 0, y: -1 },
-        DOWN: { x: 0, y: 1 },
-        LEFT: { x: -1, y: 0 },
-        RIGHT: { x: 1, y: 0 }
-    };
 
     static SIZE = 4;
     /*

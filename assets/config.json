@@ -7,7 +7,23 @@
     "maxLevelPlants": 6,
     "mushroom": 4,
     "grass": 2
-  },
+  }, "events": [
+    {
+      "id": "heavy_rain",
+      "turn": 3,
+      "effects": {
+        "sunLevel": 2,
+        "moisture": 8
+      }
+    },
+    {
+      "id": "sunny",
+      "turn": 7,
+      "effects": {
+        "sunLevel": 6
+      }
+    }
+  ],
   "human_instructions": "Grow atleast 6 max level plants with 4 mushroom and 2 grass"
 
 }

@@ -1,7 +1,6 @@
 import { Player } from '../GameObjects/player.ts';
 import { Grid } from '../GameObjects/grid.ts';
 import { Plant } from '../GameObjects/plant.ts';
-//import yaml from 'js-yaml';
 
 export class Play extends Phaser.Scene {
     private player!: Player;
@@ -9,7 +8,7 @@ export class Play extends Phaser.Scene {
     private gridStates: ArrayBuffer[] = [];
     private redoGridStates: ArrayBuffer[] = [];
     private winningPlants: Set<Plant> = new Set();
-    private daysPassed: number;
+    private daysPassed!: number;
     private eventBus!: Phaser.Events.EventEmitter;
     private gameConfig: any; // To hold config
 
@@ -38,7 +37,12 @@ export class Play extends Phaser.Scene {
         this.load.image("player", "player1.png");
 
         // Apply link for json file
-        this.load.json('gameConfig', 'config.json');
+        try {
+            const response = await fetch('CMPM121-Final/assets/config.json');
+            this.gameConfig = await response.json();
+        } catch (error) {
+            console.error('Error loading config.json:', error);
+        }
     }
 
     create() {
@@ -46,11 +50,9 @@ export class Play extends Phaser.Scene {
         this.displayControls();
         this.createEventBus();
 
-        this.gameConfig = this.cache.json.get('gameConfig');
-
         this.player = new Player(this, 150, 50);
         if(this.gameConfig){
-            this.grid = new Grid(this, 100, 50, this.gameConfig.grid.height, this.gameConfig.grid.width, 1, 1);
+            this.grid = new Grid(this, 10, 12, this.gameConfig.grid.height, this.gameConfig.grid.width, 1, 1);
         } else{
             this.grid = new Grid(this, 100, 50, 2, 2, 1, 1);
         }
@@ -125,14 +127,28 @@ export class Play extends Phaser.Scene {
     }
 
     private advanceTime() {
-        this.grid.tiles.forEach((row, y) => {
-            row.forEach((tile, x) => {
-                tile.sunLevel = Math.floor(Math.random() * 5); // between 0 and 5
-                tile.moisture += Math.floor(Math.random() * 5); // between 0 and 5
-                tile.plant.tryToGrow();
-                this.updateWinProgress(tile.plant);
+        const currentEvent = this.checkEvent();
+        if(!currentEvent){
+            this.grid.tiles.forEach((row, y) => {
+                row.forEach((tile, x) => {
+                    tile.sunLevel = Math.floor(Math.random() * 5); // between 0 and 5
+                    tile.moisture += Math.floor(Math.random() * 5); // between 0 and 5
+                    tile.plant.tryToGrow();
+                    this.updateWinProgress(tile.plant);
+                });
             });
-        });
+        } else{
+            this.grid.tiles.forEach((row) => {
+                row.forEach((tile) => {
+                    if (currentEvent.effects.sunLevel !== undefined) {
+                        tile.sunLevel = currentEvent.effects.sunLevel;
+                    }
+                    if (currentEvent.effects.moisture !== undefined) {
+                        tile.moisture = currentEvent.effects.moisture;
+                    }
+                });
+            });
+        }
         this.daysPassed += 1;
         this.eventBus.emit("grid changed");
         console.log("Advanced time");
@@ -260,5 +276,17 @@ export class Play extends Phaser.Scene {
             this.redoGridStates = [];
             this.saveToSlot('A');
         });
+    }
+
+    private checkEvent(){
+        let currentEvent = undefined;
+        for (const event of this.gameConfig.events) {
+            if (event.turn == this.daysPassed) {
+                console.log(event.id, this.daysPassed);
+                currentEvent = event;
+                break;
+            }
+        }
+        return currentEvent;
     }
 }
