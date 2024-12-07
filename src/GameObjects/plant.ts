@@ -64,6 +64,7 @@ export class Plant extends Phaser.GameObjects.Sprite {
         super(scene, x, y, 'dirt'); // Provide a default texture key
         scene.add.existing(this);
         this.setDepth(Plant.DEPTH);
+        this.setVisible(false);
 
         this.tile = tile;
         this.dataView = dataView;
