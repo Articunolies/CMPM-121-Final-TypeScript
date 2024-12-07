@@ -28,7 +28,7 @@ export class Play extends Phaser.Scene {
     }
 
     async preload() {
-        this.load.path = 'CMPM121-Final/assets/';
+        this.load.path = 'CMPM-121-Final-TypeScript/assets/';
         this.load.image("dirt", "dirt.png");
         this.load.image("grass1", "grass1.png");
         this.load.image("grass2", "grass2.png");
@@ -38,7 +38,7 @@ export class Play extends Phaser.Scene {
 
         // Apply link for json file
         try {
-            const response = await fetch('CMPM121-Final/assets/config.json');
+            const response = await fetch('CMPM-121-Final-TypeScript/assets/config.json');
             this.gameConfig = await response.json();
         } catch (error) {
             console.error('Error loading config.json:', error);
@@ -49,7 +49,14 @@ export class Play extends Phaser.Scene {
         this.setInput();
         this.displayControls();
         this.createEventBus();
-
+        document.getElementById('advanceTimeButton')!.addEventListener('click', () => this.advanceTime());
+        document.getElementById('undoButton')!.addEventListener('click', () => this.undo());
+        document.getElementById('redoButton')!.addEventListener('click', () => this.redo());
+        document.getElementById('saveToSlot1Button')!.addEventListener('click', () => this.saveToSlot(1));
+        document.getElementById('saveToSlot2Button')!.addEventListener('click', () => this.saveToSlot(2));
+        document.getElementById('loadSlot1Button')!.addEventListener('click', () => this.loadSlot(1));
+        document.getElementById('loadSlot2Button')!.addEventListener('click', () => this.loadSlot(2));
+        document.getElementById('loadAutoSaveButton')!.addEventListener('click', () => this.loadSlot('A'));
         this.player = new Player(this, 150, 50);
         if(this.gameConfig){
             this.grid = new Grid(this, 10, 12, this.gameConfig.grid.height, this.gameConfig.grid.width, 1, 1);
@@ -70,7 +77,7 @@ export class Play extends Phaser.Scene {
         // Time
         this.advanceTimeKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.T);
         this.advanceTimeKey.on("down", () => this.advanceTime());
-
+        
         // Undo & Redo
         this.undoKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.undoKey.on("down", () => this.undo());
@@ -99,6 +106,8 @@ export class Play extends Phaser.Scene {
             localStorage.clear();
             console.log("CLEARED LOCAL STORAGE");
         });
+
+        
     }
 
     private displayControls() {
@@ -112,18 +121,6 @@ export class Play extends Phaser.Scene {
             A mushroom cannot grow if there's grass above it <br>
             This game autosaves every time after planting, reaping, or advancing time
             <h2>Controls</h2>
-            Move: ( WASD ) <br>
-            Plant Grass: ( 1 ) <br>
-            Plant Mushroom: ( 2 ) <br>
-            Reap: ( R ) <br>
-            Advance Time: ( T ) <br>
-            Undo: ( LEFT ) <br>
-            Redo: ( RIGHT ) <br>
-            Save to Slot 1: ( P ) <br>
-            Save to Slot 2: ( ' ) <br>
-            Load Slot 1: ( [ ) <br>
-            Load Slot 2: ( ] ) <br>
-            Load Auto Save: ( \\ )
             `;
         } else {
             document.getElementById("description")!.innerHTML = `
@@ -135,18 +132,6 @@ export class Play extends Phaser.Scene {
             A mushroom cannot grow if there's grass above it <br>
             This game autosaves every time after planting, reaping, or advancing time
             <h2>Controls</h2>
-            Move: ( WASD ) <br>
-            Plant Grass: ( 1 ) <br>
-            Plant Mushroom: ( 2 ) <br>
-            Reap: ( R ) <br>
-            Advance Time: ( T ) <br>
-            Undo: ( LEFT ) <br>
-            Redo: ( RIGHT ) <br>
-            Save to Slot 1: ( P ) <br>
-            Save to Slot 2: ( ' ) <br>
-            Load Slot 1: ( [ ) <br>
-            Load Slot 2: ( ] ) <br>
-            Load Auto Save: ( \\ )
             `;
         }
     }

@@ -14,7 +14,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     private plantMushroomKey!: Phaser.Input.Keyboard.Key;
     private reapPlantKey!: Phaser.Input.Keyboard.Key;
     private tileWasLastStandingOn: Tile | null = null;
-
+    private moveUp: boolean = false;
+    private moveDown: boolean = false;
+    private moveLeft: boolean = false;
+    private moveRight: boolean = false;
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, "player");
         scene.add.existing(this);
@@ -41,14 +44,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.moveDownKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.moveLeftKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.moveRightKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-
+        document.getElementById('moveUpButton')!.addEventListener('mousedown', () => this.moveUp = true);
+        document.getElementById('moveUpButton')!.addEventListener('mouseup', () => this.moveUp = false);
+        document.getElementById('moveDownButton')!.addEventListener('mousedown', () => this.moveDown = true);
+        document.getElementById('moveDownButton')!.addEventListener('mouseup', () => this.moveDown = false);
+        document.getElementById('moveLeftButton')!.addEventListener('mousedown', () => this.moveLeft = true);
+        document.getElementById('moveLeftButton')!.addEventListener('mouseup', () => this.moveLeft = false);
+        document.getElementById('moveRightButton')!.addEventListener('mousedown', () => this.moveRight = true);
+        document.getElementById('moveRightButton')!.addEventListener('mouseup', () => this.moveRight = false);
         // Planting & Reaping
-        this.plantGrassKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
-        this.plantGrassKey.on("down", () => this.plant(Plant.SPECIES.GRASS));
-        this.plantMushroomKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
-        this.plantMushroomKey.on("down", () => this.plant(Plant.SPECIES.MUSHROOM));
-        this.reapPlantKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-        this.reapPlantKey.on("down", () => this.reap());
+        document.getElementById('plantGrassButton')!.addEventListener('click', () => this.plant(Plant.SPECIES.GRASS));
+        document.getElementById('plantMushroomButton')!.addEventListener('click', () => this.plant(Plant.SPECIES.MUSHROOM));
+        document.getElementById('reapPlantButton')!.addEventListener('click', () => this.reap());
     }
 
     private plant(species: { id: number; name: string; level2Conditions: { sunLevel: number; moisture: number } }) {
@@ -86,36 +93,36 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         return Phaser.Geom.Intersects.RectangleToRectangle(this.getBounds(), this.tileWasLastStandingOn!.getBounds());
     }
 
-	private handleMovement() {
-		let numMoveDirections = 0;
-	
-		const body = this.body as Phaser.Physics.Arcade.Body;
-	
-		if (this.moveUpKey.isDown) {
-			body.setVelocityY(-Player.VELOCITY);
-			numMoveDirections++;
-		} else if (this.moveDownKey.isDown) {
-			body.setVelocityY(Player.VELOCITY);
-			numMoveDirections++;
-		} else {
-			body.setVelocityY(0);
-		}
-	
-		if (this.moveLeftKey.isDown) {
-			body.setVelocityX(-Player.VELOCITY);
-			numMoveDirections++;
-		} else if (this.moveRightKey.isDown) {
-			body.setVelocityX(Player.VELOCITY);
-			numMoveDirections++;
-		} else {
-			body.setVelocityX(0);
-		}
-	
-		if (numMoveDirections > 1) {
-			body.velocity.x /= Math.SQRT2;
-			body.velocity.y /= Math.SQRT2;
-		}
-	}
+    private handleMovement() {
+        let numMoveDirections = 0;
+    
+        const body = this.body as Phaser.Physics.Arcade.Body;
+    
+        if (this.moveUp) {
+            body.setVelocityY(-Player.VELOCITY);
+            numMoveDirections++;
+        } else if (this.moveDown) {
+            body.setVelocityY(Player.VELOCITY);
+            numMoveDirections++;
+        } else {
+            body.setVelocityY(0);
+        }
+    
+        if (this.moveLeft) {
+            body.setVelocityX(-Player.VELOCITY);
+            numMoveDirections++;
+        } else if (this.moveRight) {
+            body.setVelocityX(Player.VELOCITY);
+            numMoveDirections++;
+        } else {
+            body.setVelocityX(0);
+        }
+    
+        if (numMoveDirections > 1) {
+            body.velocity.x /= Math.SQRT2;
+            body.velocity.y /= Math.SQRT2;
+        }
+    }
 
 	private updateTileHitboxPosition() {
 		const body = this.body as Phaser.Physics.Arcade.Body;
