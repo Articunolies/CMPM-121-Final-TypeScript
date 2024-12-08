@@ -13,6 +13,7 @@ export default defineConfig({
       }
     }
   },
+  publicDir: 'public', // If you have a public directory for static files
   resolve: {
     alias: {
       '@assets': '/assets'
