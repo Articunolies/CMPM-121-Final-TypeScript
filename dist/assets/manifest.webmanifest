@@ -1,0 +1,11 @@
+{
+    "name": "Crops Life",
+    "short_name": "Crops Life",
+    "description": "Grow plants to win!",
+    "start_url": "/index.html",
+    "display": "fullscreen",
+    "icons": [{
+        "sizes": "180x180",
+        "src": "https://cdn.discordapp.com/attachments/1303780404322635878/1315100650945777694/Crops_Life_Icon.png?ex=67562e6c&is=6754dcec&hm=960fdfc6d10212b2be9149f5df37b4df0fc5d4d8ccfeeffcd82f791817ceb457&"
+    }]
+}
