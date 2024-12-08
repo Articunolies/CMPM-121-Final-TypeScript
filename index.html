@@ -4,42 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crops Life</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        #game-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 20px;
-        }
-        button {
-            width: 100%;
-            max-width: 300px;
-            padding: 15px;
-            margin: 10px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        button:active {
-            background-color: #3e8e41;
-        }
-    </style>
+    <link rel="manifest" href="manifest.webmanifest"/>
 </head>
 <body>
+    <script type="module" src="./lib/phaser.js"></script>
+    <script type="module" src="./src/GameObjects/grid.ts"></script>
+    <script type="module" src="./src/GameObjects/plant.ts"></script>
+    <script type="module" src="./src/GameObjects/player.ts"></script>
+    <script type="module" src="./src/GameObjects/tile.ts"></script>
+    <script type="module" src="./src/scenes/Play.ts"></script>
+    <script type="module" src="./src/Main.ts"></script>
+    <div id="gameView"></div>
+    <span id="description"></span>
     <div id="game-container"></div>
     <button id="moveUpButton">Move Up</button>
     <button id="moveDownButton">Move Down</button>
@@ -59,12 +35,5 @@
     <button id="languageEnButton">English</button>
     <button id="languageZhButton">中文</button>
     <button id="languageArButton">العربية</button>
-    <script type="module" src="./lib/phaser.js"></script>
-    <script type="module" src="./src/GameObjects/grid.ts"></script>
-    <script type="module" src="./src/GameObjects/plant.ts"></script>
-    <script type="module" src="./src/GameObjects/player.ts"></script>
-    <script type="module" src="./src/GameObjects/tile.ts"></script>
-    <script type="module" src="./src/scenes/Play.ts"></script>
-    <script type="module" src="./src/Main.ts"></script>
 </body>
 </html>
