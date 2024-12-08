@@ -1,11 +1,47 @@
+# DevLog Entry 5 - [12/7/2024]
+
+### F0+F1+F2
+No major changes were made.
+
+### Internationalization
+
+
+### Localization
+
+
+### Mobile Installation
+Since our game is played on the browser, we gave it capabilities to be an installable Progressive Web App in order for it to be able to be installed onto a mobile device. We followed the example given by our professor in order to make this happen, where he created a .webmanifest file and put a link to it in the head of index.html. No changes to the game's code were needed to make it installable.
+
+### Mobile Play (Offline)
+In order to make the game playable on a mobile device, we changed all the actions in our game from keyboard inputs to buttons. Making this change also allowed us to display text in our game, opening the way for the game's multi-language support to be seen. No changes to the game's code were needed to make it playable offline.
+
+## Reflection
+No part of our plan changed this time, but a large part of how our game is did. In this development phase, our game went from needing a keyboard in order to be played to simply needing a way to press a button. We're glad we were finally able to change how the input for our game works, because previously, it felt extremely like a prototype just meant for developers to play. We believe this change makes our game feel at least just a bit more finalized than it used to.
+
 # DevLog Entry 3 - [12/6/2024]
+
 ## How we satisfied the software requirements
+
 ### F0+F1
-No Major Changes were made.
+No major changes were made. Code was converted from JavaScript to TypeScript however.
 
 ### External DSL for Scenario Design
 
 ### Internal DSL for Plants and Growth Conditions
+To create a new plant, simply navigate to plant.ts, locate the static SPECIES attribute, and write in a new plant as a TypeScript object. Grass and mushroom are already defined and make as good examples.
+```
+GRASS: {
+    name: "grass",
+    id: 1,
+    growthConditions: {
+        sunLevel: 3,
+        moisture: 5,
+        badNeighborName: "mushroom",
+        badNeighborDirection: this.DIRECTIONS.LEFT
+    }
+}
+```
+What this is saying is that I've defined a plant called GRASS. Its in-game name is "grass", its id is 1, and in order to grow, the tile it's on needs to have a sun level of at least 3, a moisture of at least 5, and the plant to the left of this grass must not be a mushroom.
 
 ### Switch to Alternate Platform
 Carried Over Code and Data:
@@ -21,6 +57,7 @@ Modules and Imports: Code was restructured to use ES6 modules, with proper impor
 Originally, the plan was to use JavaScript due to integration difficulties with TypeScript and Phaser. However, with updated documentation and better support, the project shifted to TypeScript. This change provided better tooling and helped catch errors at compile time, enhancing development efficiency.
 
 ## Reflection
+With F2, the amount of stuff within the repository increased a lot. This is because we needed to bring in a lot more tools, such as Deno, in order to get our game working in TypeScript. So overall, we are now using more tools than before and the project size has increased. I would say working on this project feels a bit more complicated now.
 
 # DevLog Entry 2 - [11/30/2024]
 
