@@ -1,3 +1,29 @@
+# DevLog Entry 4 - [12/7/2024]
+## How we satisfied the software requirements
+### F0+F1+F2
+No Major Changes were made.
+### Internationalization
+To support internationalization, we modified our code to distinguish between strings internal to the program and strings that will be shown to the player. We created a `config.json` file that contains translations for all the text in our game. This file includes translations for at least three languages: English, Chinese (Simplified), and Arabic.
+
+We added a method to load the config file in the `preload` method of our `Play` scene and stored the translations in a variable. We also added a method to set the current language and update the displayed text accordingly. This method updates the text content of the buttons and other UI elements based on the selected language.
+
+When adding support for a new language or adding a new translatable message to the game, the following files need to be changed:
+- `config.json`: Add the new language and its translations.
+- `Play.ts`: Ensure that the new translatable message is updated in the `updateText` method.
+### Localization
+Our game supports three languages: English, Chinese (Simplified), and Arabic. 
+
+- **English**: The default language of the game. All team members are fluent in English, so no additional help was needed for this localization.
+- **Chinese (Simplified)**: We used a combination of our own knowledge and online translation tools to translate the game text into Chinese. We also had a friend who is a native Chinese speaker review the translations to ensure accuracy.
+- **Arabic**: We used online translation tools to translate the game text into Arabic. We also had a volunteer classmate who is a native Arabic speaker review the translations to ensure accuracy.
+
+To select the language, the user can click on the language buttons provided in the game. These buttons are labeled with the language names (e.g., "English", "中文", "العربية"). When a language button is clicked, the `setLanguage` method is called, which updates the text content of the buttons and other UI elements based on the selected language. The text direction is also adjusted for right-to-left languages like Arabic.
+### Mobile Installation
+
+### Mobile Play (Offline)
+
+## Reflection
+
 # DevLog Entry 3 - [12/6/2024]
 ## How we satisfied the software requirements
 ### F0+F1
