@@ -22,6 +22,7 @@ export class Play extends Phaser.Scene {
     private loadAutoSaveKey!: Phaser.Input.Keyboard.Key;
     private debugKey1!: Phaser.Input.Keyboard.Key;
     private debugKey2!: Phaser.Input.Keyboard.Key;
+    private currentLanguage: string = 'en'; // Default language
 
     constructor() {
         super("gameScene");
@@ -49,14 +50,6 @@ export class Play extends Phaser.Scene {
         this.setInput();
         this.displayControls();
         this.createEventBus();
-        document.getElementById('advanceTimeButton')!.addEventListener('click', () => this.advanceTime());
-        document.getElementById('undoButton')!.addEventListener('click', () => this.undo());
-        document.getElementById('redoButton')!.addEventListener('click', () => this.redo());
-        document.getElementById('saveToSlot1Button')!.addEventListener('click', () => this.saveToSlot(1));
-        document.getElementById('saveToSlot2Button')!.addEventListener('click', () => this.saveToSlot(2));
-        document.getElementById('loadSlot1Button')!.addEventListener('click', () => this.loadSlot(1));
-        document.getElementById('loadSlot2Button')!.addEventListener('click', () => this.loadSlot(2));
-        document.getElementById('loadAutoSaveButton')!.addEventListener('click', () => this.loadSlot('A'));
         this.player = new Player(this, 150, 50);
         if(this.gameConfig){
             this.grid = new Grid(this, 10, 12, this.gameConfig.grid.height, this.gameConfig.grid.width, 1, 1);
@@ -67,6 +60,8 @@ export class Play extends Phaser.Scene {
         this.redoGridStates = [];
         this.winningPlants = new Set();
         this.daysPassed = 0;
+
+        this.updateText();   // Set default language text
     }
 
     override update() {
@@ -111,29 +106,24 @@ export class Play extends Phaser.Scene {
     }
 
     private displayControls() {
-        if(!this.gameConfig.human_instructions){
-            document.getElementById("description")!.innerHTML = `
-            <h1>Crops Life</h1>
-            <h2>Instructions</h2>
-            Grow a max level plant on each tile to win! <br>
-            Plants have a max level of 2 <br>
-            Grass cannot grow if there's a mushroom to its left <br>
-            A mushroom cannot grow if there's grass above it <br>
-            This game autosaves every time after planting, reaping, or advancing time
-            <h2>Controls</h2>
-            `;
-        } else {
-            document.getElementById("description")!.innerHTML = `
-            <h1>Crops Life</h1>
-            <h2>Instructions</h2>
-            ${this.gameConfig.human_instructions} <br>
-            Plants have a max level of 2 <br>
-            Grass cannot grow if there's a mushroom to its left <br>
-            A mushroom cannot grow if there's grass above it <br>
-            This game autosaves every time after planting, reaping, or advancing time
-            <h2>Controls</h2>
-            `;
-        }
+
+        document.getElementById("description")!.innerHTML = `
+        <h1>${this.gameConfig.en.Title}</h1>
+        <h2>${this.gameConfig.en.Instructions}</h2>
+        <pre>${this.gameConfig.en.human_instructions}</pre>
+        <h2>${this.gameConfig.en.Controls}</h2>
+        `;
+        document.getElementById('advanceTimeButton')!.addEventListener('click', () => this.advanceTime());
+        document.getElementById('undoButton')!.addEventListener('click', () => this.undo());
+        document.getElementById('redoButton')!.addEventListener('click', () => this.redo());
+        document.getElementById('saveToSlot1Button')!.addEventListener('click', () => this.saveToSlot(1));
+        document.getElementById('saveToSlot2Button')!.addEventListener('click', () => this.saveToSlot(2));
+        document.getElementById('loadSlot1Button')!.addEventListener('click', () => this.loadSlot(1));
+        document.getElementById('loadSlot2Button')!.addEventListener('click', () => this.loadSlot(2));
+        document.getElementById('loadAutoSaveButton')!.addEventListener('click', () => this.loadSlot('A'));
+        document.getElementById('languageEnButton')!.addEventListener('click', () => this.setLanguage('en'));
+        document.getElementById('languageZhButton')!.addEventListener('click', () => this.setLanguage('zh'));
+        document.getElementById('languageArButton')!.addEventListener('click', () => this.setLanguage('ar'));
     }
 
     private advanceTime() {
@@ -298,5 +288,41 @@ export class Play extends Phaser.Scene {
             }
         }
         return currentEvent;
+    }
+
+    private setLanguage(language: string) {
+        this.currentLanguage = language;
+        this.updateText();
+    }
+    
+    private updateText() {
+        const lang = this.gameConfig[this.currentLanguage];
+        const descriptionElement = document.getElementById("description")!;
+        descriptionElement.innerHTML = `
+        <h1>${lang.title}</h1>
+        <h2>${lang.instructions}</h2>
+        <pre>${lang.human_instructions}</pre>
+        <h2>${lang.controls}</h2>
+        `;
+        if (this.currentLanguage === 'ar') {
+            descriptionElement.setAttribute('dir', 'rtl');
+        } else {
+            descriptionElement.setAttribute('dir', 'ltr');
+        }
+        document.getElementById('moveUpButton')!.innerText = lang.buttons.moveUp;
+        document.getElementById('moveDownButton')!.innerText = lang.buttons.moveDown;
+        document.getElementById('moveLeftButton')!.innerText = lang.buttons.moveLeft;
+        document.getElementById('moveRightButton')!.innerText = lang.buttons.moveRight;
+        document.getElementById('plantGrassButton')!.innerText = lang.buttons.plantGrass;
+        document.getElementById('plantMushroomButton')!.innerText = lang.buttons.plantMushroom;
+        document.getElementById('reapPlantButton')!.innerText = lang.buttons.reapPlant;
+        document.getElementById('advanceTimeButton')!.innerText = lang.buttons.advanceTime;
+        document.getElementById('undoButton')!.innerText = lang.buttons.undo;
+        document.getElementById('redoButton')!.innerText = lang.buttons.redo;
+        document.getElementById('saveToSlot1Button')!.innerText = lang.buttons.saveToSlot1;
+        document.getElementById('saveToSlot2Button')!.innerText = lang.buttons.saveToSlot2;
+        document.getElementById('loadSlot1Button')!.innerText = lang.buttons.loadSlot1;
+        document.getElementById('loadSlot2Button')!.innerText = lang.buttons.loadSlot2;
+        document.getElementById('loadAutoSaveButton')!.innerText = lang.buttons.loadAutoSave;
     }
 }
