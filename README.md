@@ -40,7 +40,36 @@ No part of our plan changed this time, but a large part of how our game is did. 
 No major changes were made. Code was converted from JavaScript to TypeScript however.
 
 ### External DSL for Scenario Design
-
+The external DSL is based in JSON, in order to create a new situation, go to the config.json file and edit the sections based on what you want changed. Here is an example json:
+```
+"grid": {
+"height": 4,
+"width": 4
+},
+"win_conditions": {
+"maxLevelPlants": 4,
+"mushroom": 1,
+"grass": 2
+}, "events": [
+{
+    "id": "heavy_rain",
+    "turn": 3,
+    "effects": {
+    "sunLevel": 2,
+    "moisture": 8
+    }
+},
+{
+    "id": "sunny",
+    "turn": 7,
+    "effects": {
+    "sunLevel": 6
+    }
+}
+],
+"human_instructions": "Grow atleast 4 max level plants with 1 mushroom and 2 grass"
+```
+In this example, the grid is going to be a 4x4, where the player must have 4 max level plants with 1 of them being a mushroom and 2 of them being grass. The only win condition needed to be provided is the maxLevelPlants, the species requirement is optional. For the creating of events, simply enter an id/name for the event, enter a turn number and then list the effects of the event. In the example, the first event is "heavy rain" which actives on turn 3 and applies a sun level of 2 but moisture level of 8 to each tile. The events can currently only change the sunLevel and moisture of every tile, if you want to initialize the game with certain amounts of sun or moisture simply create an event on turn 0 and list the effects. The human instructions lets you write out the win conditions and have it displayed in the instructions area.
 ### Internal DSL for Plants and Growth Conditions
 To create a new plant, simply navigate to plant.ts, locate the static SPECIES attribute, and write in a new plant as a TypeScript object. Grass and mushroom are already defined and make as good examples.
 ```
