@@ -3,10 +3,12 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 jobs:
   deploy:
     environment:
@@ -17,33 +19,37 @@ jobs:
       REPO_NAME: ${{ github.event.repository.name }}
     steps:
       - uses: actions/checkout@v4
-
+  
       # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
-
+  
       # Install npm dependencies
       - name: Install Dependencies
         run: npm install
-
+  
       # Setup Deno
       - name: Setup Deno
         uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-
+  
       # Build the project
       - name: Build Project
         run: deno task build
 
+      # Copy Assets
+      - name: Copy Assets
+        run: deno run --allow-read --allow-write copy_assets.ts
+  
       - uses: actions/configure-pages@v5
-
+  
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./dist"
-
+  
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v4  
