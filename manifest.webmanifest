@@ -2,7 +2,7 @@
     "name": "Crops Life",
     "short_name": "Crops Life",
     "description": "Grow plants to win!",
-    "start_url": "/index.html",
+    "start_url": "CMPM-121-Final-TypeScript/",
     "display": "fullscreen",
     "icons": [{
         "sizes": "180x180",
