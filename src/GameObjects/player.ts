@@ -44,7 +44,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.moveDownKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.moveLeftKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.moveRightKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        // mouse
         document.getElementById('moveUpButton')!.addEventListener('mousedown', () => this.moveUp = true);
         document.getElementById('moveUpButton')!.addEventListener('mouseup', () => this.moveUp = false);
         document.getElementById('moveDownButton')!.addEventListener('mousedown', () => this.moveDown = true);
@@ -53,16 +52,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         document.getElementById('moveLeftButton')!.addEventListener('mouseup', () => this.moveLeft = false);
         document.getElementById('moveRightButton')!.addEventListener('mousedown', () => this.moveRight = true);
         document.getElementById('moveRightButton')!.addEventListener('mouseup', () => this.moveRight = false);
-        // touch
-        document.getElementById('moveUpButton')!.addEventListener('touchstart', () => this.moveUp = true);
-        document.getElementById('moveUpButton')!.addEventListener('touchend', () => this.moveUp = false);
-        document.getElementById('moveDownButton')!.addEventListener('touchstart', () => this.moveDown = true);
-        document.getElementById('moveDownButton')!.addEventListener('touchend', () => this.moveDown = false);
-        document.getElementById('moveLeftButton')!.addEventListener('touchstart', () => this.moveLeft = true);
-        document.getElementById('moveLeftButton')!.addEventListener('touchend', () => this.moveLeft = false);
-        document.getElementById('moveRightButton')!.addEventListener('touchstart', () => this.moveRight = true);
-        document.getElementById('moveRightButton')!.addEventListener('touchend', () => this.moveRight = false);
-
         // Planting & Reaping
         document.getElementById('plantGrassButton')!.addEventListener('click', () => this.plant(Plant.SPECIES.GRASS));
         document.getElementById('plantMushroomButton')!.addEventListener('click', () => this.plant(Plant.SPECIES.MUSHROOM));
