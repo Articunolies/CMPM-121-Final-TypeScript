@@ -27,7 +27,7 @@ To select the language, the user can click on the language buttons provided in t
 Since our game is played on the browser, we gave it capabilities to be an installable Progressive Web App in order for it to be able to be installed onto a mobile device. We followed the example given by our professor in order to make this happen, where he created a .webmanifest file and put a link to it in the head of index.html. No changes to the game's code were needed to make it installable.
 
 ### Mobile Play (Offline)
-We were unable to satisfy this requirement. We looked into using Service Workers and caching in order to make our Progressive Web App playable offline but got confused and were unable to implement them successfully.
+We were unable to satisfy this requirement. We looked into using Service Workers and caching in order to make our Progressive Web App playable offline but got confused about what was going on and what files were necessary to cache.
 
 ## Reflection
 No part of our plan changed this time, but a large part of how our game is did. In this development phase, our game went from needing a keyboard in order to be played to simply needing a way to press a button. We're glad we were finally able to change how the input for our game works, because previously, it felt extremely like a prototype just meant for developers to play. We believe this change makes our game feel at least just a bit more finalized than it used to.
