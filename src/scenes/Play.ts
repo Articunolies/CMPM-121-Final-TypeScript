@@ -53,7 +53,7 @@ export class Play extends Phaser.Scene {
         this.createEventBus();
         this.player = new Player(this, 50, 50);
         if(this.gameConfig){
-            this.grid = new Grid(this, 10, 12, this.gameConfig.grid.height, this.gameConfig.grid.width, 1, 1);
+            this.grid = new Grid(this, 10, 10, this.gameConfig.grid.width, this.gameConfig.grid.height, 1, 1);
         } else{
             this.grid = new Grid(this, 100, 50, 2, 2, 1, 1);
         }
