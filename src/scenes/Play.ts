@@ -11,6 +11,7 @@ export class Play extends Phaser.Scene {
     private daysPassed!: number;
     private eventBus!: Phaser.Events.EventEmitter;
     private gameConfig: any; // To hold config
+    private lastPlayerTile!: any;
 
     private advanceTimeKey!: Phaser.Input.Keyboard.Key;
     private undoKey!: Phaser.Input.Keyboard.Key;
@@ -50,7 +51,7 @@ export class Play extends Phaser.Scene {
         this.setInput();
         this.displayControls();
         this.createEventBus();
-        this.player = new Player(this, 150, 50);
+        this.player = new Player(this, 50, 50);
         if(this.gameConfig){
             this.grid = new Grid(this, 10, 12, this.gameConfig.grid.height, this.gameConfig.grid.width, 1, 1);
         } else{
@@ -60,12 +61,16 @@ export class Play extends Phaser.Scene {
         this.redoGridStates = [];
         this.winningPlants = new Set();
         this.daysPassed = 0;
-
         this.updateText();   // Set default language text
     }
 
     override update() {
         this.player.update();
+        let playerTile = this.player.tileStandingOn!;
+        if (playerTile) {
+            this.lastPlayerTile = playerTile;
+            this.updateTileInfo(playerTile);
+        }
     }
 
     private setInput() {
@@ -106,7 +111,6 @@ export class Play extends Phaser.Scene {
     }
 
     private displayControls() {
-
         document.getElementById("description")!.innerHTML = `
         <h1>${this.gameConfig.en.Title}</h1>
         <h2>${this.gameConfig.en.Instructions}</h2>
@@ -124,6 +128,31 @@ export class Play extends Phaser.Scene {
         document.getElementById('languageEnButton')!.addEventListener('click', () => this.setLanguage('en'));
         document.getElementById('languageZhButton')!.addEventListener('click', () => this.setLanguage('zh'));
         document.getElementById('languageArButton')!.addEventListener('click', () => this.setLanguage('ar'));
+    }
+
+    private updateTileInfo(tile: any) {
+        tile = tile || this.lastPlayerTile;
+    
+        const tileInfoDiv = document.getElementById("tileInfo")!;
+        if (tile && tile.plant && tile.plant.species) {
+            tileInfoDiv.innerHTML = `
+                <br> X: ${tile.gridIndex.x}, Y: ${tile.gridIndex.y}
+                <br> 💧: ${tile.moisture}
+                <br> ☀️: ${tile.sunLevel}
+            `;
+        } else if (tile) {
+            tileInfoDiv.innerHTML = `
+                <br> X: ${tile.gridIndex.x}, Y: ${tile.gridIndex.y}
+                <br> 💧: ${tile.moisture}
+                <br> ☀️: ${tile.sunLevel}
+            `;
+        } else {
+            tileInfoDiv.innerHTML = `
+                <br> X: None, Y: None
+                <br> 💧: N/A
+                <br> ☀️: N/A
+            `;
+        }
     }
 
     private advanceTime() {
